@@ -4,25 +4,18 @@
 "______________________________________________________________
 
 func! VGrep(term)
-
   let l:winid = win_getid()
   let l:bufnr = bufnr('%')
-
   exe 'silent! vimgrep /' . escape(a:term,'/') . '/ **/*'
   copen
-
   call win_gotoid(l:winid)
-
   if bufnr('%') != l:bufnr
     execute 'buffer ' . l:bufnr
   endif
-
 endfunc
 
 
 command! -nargs=1 Grep call VGrep(<q-args>)
-
-
 
 augroup quickfix
   autocmd!
@@ -30,3 +23,4 @@ augroup quickfix
   autocmd FileType qf nnoremap <buffer> q :cclose<CR>
 augroup END
 
+"EOF

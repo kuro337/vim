@@ -3,6 +3,7 @@
 " NOTE: Use Shift + Mouse for Selecting ex cmd output
 " Use Ctrl instead of Cmd, Terminal vim does not support MacOS Command
 
+" OLD vimrc file, ignore
 " Set encoding
 scriptencoding utf-8
 set encoding=utf-8
