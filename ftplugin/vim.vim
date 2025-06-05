@@ -14,6 +14,6 @@ call NewAbbr('au!', 'autocmd BufWritePre *.go redraw!','vim AutoCommand')
 call NewAbbr('fn!', 'func! Func()<CR>call system("xsel -ib", "stdin args")<CR>endfunc','vim func')
 call NewAbbr('fn!', 'func! Func()<CR>call system("xsel -ib", "stdin args")<CR>endfunc','vim func')
 call NewAbbr('if!', 'if g:var ==# "y" | call Func() | endif','if shorthand')
-  call NewAbbr('ife!', 'if var == "y"<CR>echomsg " "<CR>endif<Up>' . repeat('<Right>',8),'if else')
+call NewAbbr('ife!', 'if var == "y"<CR>echomsg " "<CR>endif<Up>' . repeat('<Right>',8),'if else')
   "EOF
 
