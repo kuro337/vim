@@ -37,7 +37,7 @@ set viewoptions-=options  " Do not save buflocal settings for Views
 set nostartofline         " Prevents moving the cursor to the start of the line when switching buffers or jumping.
 set synmaxcol=200         " don't syntax-highlight long lines
 set linebreak             " Breaks lines at word boundaries rather than in the middle of a word.
-set sessionoptions='curdir,folds,help,options,tabpages,winsize'
+set sessionoptions=curdir,folds,help,options,tabpages,winsize
 
 "set colorcolumn=80        " Highlight 80 character limit
 " set formatoptions-=t
