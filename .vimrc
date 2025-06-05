@@ -138,7 +138,7 @@ endfunc
 
 
 " Backup settings
-let s:vtmp = g:vim_home . '/temp'
+let s:vtmp = $HOME . '/.cache/vim'
 exe "set directory=". s:VimDir(s:vtmp .'/swap')
 exe "set backupdir=". s:VimDir(s:vtmp."/backup")
 exe "set viewdir="  . s:VimDir(s:vtmp."/view")
