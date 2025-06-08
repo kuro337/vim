@@ -139,6 +139,8 @@ func! <SID>CurrPaths(...)
 endfunc
 
 
+" Send to Clipboard  : xsel -ib  or xclip -selection clipboard
+" Get from Clipboard : xsel -b   or xclip -selection clipboard -o
 " :Path - Yank current Path to System Clipboard
 func! <SID>CurrPath()
   let l:path = expand('%:p')
