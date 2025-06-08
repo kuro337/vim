@@ -203,22 +203,36 @@ endif
 " Key Mappings
 "----------------------------------------------------------------------
 
+" Update Alt for Legacy Terminals
 " <Nul> is <C-Space>
 " for xterm/legacy terms, manually map Alt/Meta keycodes
-exec "set <A-k>=\ek"
-exec "inoremap \ek <A-k>"
-exec "set <A-j>=\ej"
-exec "inoremap \ej <A-j>"
-exec "set <A-i>=\ei"
-exec "inoremap \ei <A-i>"
-exec "set <A-s>=\es"
-exec "inoremap \es <A-s>"
-exec "set <A-v>=\ev"
-exec "inoremap \ev <A-v>"
-exec "set <A-,>=\e,"
-exec "nnoremap \e, <A-,>"
-exec "set <A-.>=\e."
-exec "nnoremap \e. <A-.>"
+func! s:altmap(keys,mode)
+  for k in split(keys,'\zs')
+    exec "set <M-".k.">=\e".k
+    exec mode." \e".k."<M-".k">"
+  endfor
+endfunc
+
+
+
+if has('mac')                            
+  nnoremap <expr> <M-j> line('.') < line('$') ? ':move .+1<CR>==':''
+  nnoremap <expr> <M-k> line('.') > 1 ? ':move .-2<CR>==':''
+else
+  call s:altmap('hjkl0bd','cnoremap')
+  call s:altmap('hjklisv','inoremap')
+  call s:altmap(',.','nnoremap')
+
+
+  nnoremap <expr> <M-j> line('.') < line('$') ? ':move .+1<CR>==':''
+  nnoremap <expr> <M-k> line('.') > 1 ? ':move .-2<CR>==':''
+
+
+  " Updates Raw Terminal Codes for Legacy Terminals
+  "let &t_TI = ""
+  "let &t_TE = ""
+
+  endif 
 
 
 " Make j/k visual down and up instead of whole lines. This makes word
@@ -240,7 +254,6 @@ xnoremap Y "+y
 " Show completion on Ctrl + Space
 " In terminal <C-Space> gets interpreted as <C-@>
 inoremap <C-@> <C-n>
-
 
 " Wrap word with quotes
 nnoremap <Leader>" mzviw<Esc>a"<Esc>bi"<Esc>`zl
@@ -267,8 +280,13 @@ inoremap <expr> <A-j> line('.') < line('$') ? '<Esc>:move .+1<CR>==i':''
 inoremap <expr> <A-k> line('.') > 1 ? '<Esc>:move .-2<CR>==i':''
 
 " up/down in cmd line
-cnoremap  <A-k> <Up>
-cnoremap  <A-j> <Down>
+cnoremap  <M-h> <Left>
+cnoremap  <M-j> <Down>
+cnoremap  <M-k> <Up>
+cnoremap  <M-l> <Right>
+cnoremap  <M-0> <Home>
+cnoremap  <M-b> <Home>
+
 
 " Execure last command again
 nnoremap <Leader>. :!!<Enter>

@@ -75,11 +75,12 @@ hi def link     goGenerateVariables Special
 hi def link     goEscapeC           Special
 
 " Go escapes
-syn match       goEscapeOctal       display contained \\[0-7]\{3}
+
+syn match       goEscapeOctal       display contained "\\[0-7]\{3}"
 syn match       goEscapeC           display contained +\\[abfnrtv\\'"]+
-syn match       goEscapeX           display contained \\x\x\{2}
-syn match       goEscapeU           display contained \\u\x\{4}
-syn match       goEscapeBigU        display contained \\U\x\{8}
+syn match       goEscapeX           display contained "\\x\x\{2}"
+syn match       goEscapeU           display contained "\\u\x\{4}"
+syn match       goEscapeBigU        display contained "\\U\x\{8}"
 syn match       goEscapeError       display contained +\\[^0-7xuUabfnrtv\\'"]+
 
 hi def link     goEscapeOctal       goSpecialString

@@ -108,11 +108,19 @@ function! ToggleComment()
 endfunction
 
 
+
 " Toggle-current line
 " NOTE: Use '_' instead of / for xterm/gnome
-nnoremap <C-_> :call ToggleComment()<CR>
-nnoremap <M-/> :call ToggleComment()<CR>
-xnoremap <C-_> :call ToggleComment()<CR>
+nnoremap <C-/> :call ToggleComment()<CR>
+xnoremap <C-/> :call ToggleComment()<CR>
+if has('mac')                            
+  nnoremap <D-/> :call ToggleComment()<CR>
+  xnoremap <D-/> :call ToggleComment()<CR>
+else
+  nnoremap <C-_> :call ToggleComment()<CR>
+  xnoremap <C-_> :call ToggleComment()<CR>
+endif
+
 
 
 func! <SID>CurrPaths(...)
