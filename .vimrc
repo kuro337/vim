@@ -203,13 +203,14 @@ endif
 " Key Mappings
 "----------------------------------------------------------------------
 
+"
 " Update Alt for Legacy Terminals
 " <Nul> is <C-Space>
 " for xterm/legacy terms, manually map Alt/Meta keycodes
 func! s:altmap(keys,mode)
-  for k in split(keys,'\zs')
+  for k in split(a:keys,'\zs')
     exec "set <M-".k.">=\e".k
-    exec mode." \e".k."<M-".k">"
+    exec a:mode." \e".k."<M-".k">"
   endfor
 endfunc
 
