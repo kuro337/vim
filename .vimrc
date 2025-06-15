@@ -222,17 +222,12 @@ else
   call s:altmap('hjkl0bd','cnoremap')
   call s:altmap('hjklisv','inoremap')
   call s:altmap(',.','nnoremap')
-
-
   nnoremap <expr> <M-j> line('.') < line('$') ? ':move .+1<CR>==':''
   nnoremap <expr> <M-k> line('.') > 1 ? ':move .-2<CR>==':''
-
-
   " Updates Raw Terminal Codes for Legacy Terminals
   "let &t_TI = ""
   "let &t_TE = ""
-
-  endif 
+endif 
 
 
 " Make j/k visual down and up instead of whole lines. This makes word
