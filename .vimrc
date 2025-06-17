@@ -23,7 +23,7 @@ set cursorline            " Highlight current line
 set cursorcolumn          " Highlight current column
 set visualbell            " Use a visual bell to notify us
 set ttimeoutlen=10        " Timeout for key code delays
-set timeoutlen=500        " Timeout for mapping delays
+set timeoutlen=225        " Timeout for mapping delays
 set belloff=all
 set autoread              " Reload files that have not been modified
 set nowrap
