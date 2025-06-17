@@ -1,8 +1,5 @@
 scriptencoding utf-8
-
 set encoding=utf-8
-
-let g:did_install_default_menus = 1  " avoid stupid menu.vim (saves ~100ms)
 let mapleader=" "       " The <leader> key
 set backspace=2           " Makes backspace behave like you'd expect
 set hidden                " Allow buffers to be backgrounded without being saved
@@ -37,13 +34,14 @@ set viewoptions-=options  " Do not save buflocal settings for Views
 set nostartofline         " Prevents moving the cursor to the start of the line when switching buffers or jumping.
 set synmaxcol=200         " don't syntax-highlight long lines
 set linebreak             " Breaks lines at word boundaries rather than in the middle of a word.
+set listchars=tab:\|\ ,eol:¬,trail:⋅ "Set the characters for the invisibles
 set sessionoptions=curdir,folds,help,options,tabpages,winsize
+let g:did_install_default_menus = 1  " avoid stupid menu.vim (saves ~100ms)
 
 "set colorcolumn=80        " Highlight 80 character limit
-" set formatoptions-=t
-" set formatoptions+=rnjol/
-
-set listchars=tab:\|\ ,eol:¬,trail:⋅ "Set the characters for the invisibles
+"set formatoptions-=t
+"set formatoptions+=rnjol/
+"set cmdheight=0          " 0 height for cmdline only available in nvim
 
 " Tab settings
 set expandtab     " Expand tabs to Spaces
@@ -64,9 +62,6 @@ set smartcase  " Be smart about case sensitivity when searching
 let &t_EI.="\e[2 q" "EI = NORMAL mode  -> Solid Block
 let &t_SI.="\e[6 q" "SI = INSERT mode  -> Solid Vertical
 let &t_SR.="\e[4 q" "SR = REPLACE mode -> Solid Underscore
-
-let &t_TI = ""
-let &t_TE = ""
 
 " Folding
 if has("folding")
@@ -103,21 +98,19 @@ set completeopt=menuone,noselect,noinsert
 set suffixes+=.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.o,.obj,.dll,.class,.pyc,.ipynb,.so,.swp,.zip,.exe,.jar,.gz
 set suffixesadd=.java,.cs
 
-" set titlestring=%{expand('%')}
-
 set title
-let &titleold = $__wtitle
+if exists('$WINTITLE')
+  let &titleold = $WINTITLE
+endif
 
 " menuone, noselect, noinsert
 " set completopt
-
 if !has("nvim")
   set guioptions=cegmt
 endif
 
 " Load Yanking Functionality from ~/.vim/lib/func.vim
 let g:vim_home = $HOME . '/.vim'
-
 fun! s:Source(p)
   if !empty(glob(a:p))
     exe 'source '.a:p
@@ -135,7 +128,6 @@ func! s:VimDir(p)
   if !isdirectory(a:p) |  call mkdir(a:p,'p',0700) | endif
   return a:p
 endfunc
-
 
 " Backup settings
 let s:vtmp = $HOME . '/.cache/vim'
@@ -156,20 +148,23 @@ if has('clipboard')
     set clipboard+=unnamed
   endif
 endif
+
 filetype plugin on
 filetype indent on
-" theme/colorscheme
+
 if PathValid(g:vim_home . '/colors/moonfly.vim') |  colorscheme moonfly  | endif
-" Turn on syntax
 if has("syntax")
   syntax enable
   syntax on
 endif
+
 if !has("gui_running")
   let &t_ut=''
 endif
+
 " Completion <C-x><C-o>
 set omnifunc=syntaxcomplete#Complete
+
 if exists('g:mergetool_mode')
   let g:gmode = 'mergetool'
   set wrap
@@ -202,8 +197,6 @@ endif
 "----------------------------------------------------------------------
 " Key Mappings
 "----------------------------------------------------------------------
-
-"
 " Update Alt for Legacy Terminals
 " <Nul> is <C-Space>
 " for xterm/legacy terms, manually map Alt/Meta keycodes
@@ -214,17 +207,16 @@ func! s:altmap(keys,mode)
   endfor
 endfunc
 
-
-
-if has('mac')                            
-  nnoremap <expr> <M-j> line('.') < line('$') ? ':move .+1<CR>==':''
-  nnoremap <expr> <M-k> line('.') > 1 ? ':move .-2<CR>==':''
+if has('mac')
+  if exists('$TMUX')
+    call s:altmap('hjkl0bd','cnoremap')
+    call s:altmap('hjklisv','inoremap')
+    call s:altmap(',.','nnoremap')
+  endif
 else
   call s:altmap('hjkl0bd','cnoremap')
   call s:altmap('hjklisv','inoremap')
   call s:altmap(',.','nnoremap')
-  nnoremap <expr> <M-j> line('.') < line('$') ? ':move .+1<CR>==':''
-  nnoremap <expr> <M-k> line('.') > 1 ? ':move .-2<CR>==':''
   " Updates Raw Terminal Codes for Legacy Terminals
   "let &t_TI = ""
   "let &t_TE = ""
@@ -240,7 +232,6 @@ map k gk
 " and global flavors.
 nmap <leader>cd :cd %:h<CR>
 nmap <leader>lcd :lcd %:h<CR>
-
 
 " Shortcut to yanking to the system clipboard
 " map <leader>y "+y
@@ -267,13 +258,14 @@ nnoremap B ^
 nnoremap <silent> <C-e> $
 nnoremap E $
 
+nnoremap <expr> <M-k> line('.') > 1 ? ':move .-2<CR>==':''
+inoremap <expr> <M-k> line('.') > 1 ? '<Esc>:move .-2<CR>==i':''
+nnoremap <expr> <M-j> line('.') < line('$') ? ':move .+1<CR>==':''
+inoremap <expr> <M-j> line('.') < line('$') ? '<Esc>:move .+1<CR>==i':''
+
 " Move line/block up/down in Normal, Insert, Visual
-vnoremap <A-k> :m '<-2<Enter>gv=gv
-vnoremap <A-j> :m '>+1<Enter>gv=gv
-nnoremap <expr> <A-j> line('.') < line('$') ? ':move .+1<CR>==':''
-nnoremap <expr> <A-k> line('.') > 1 ? ':move .-2<CR>==':''
-inoremap <expr> <A-j> line('.') < line('$') ? '<Esc>:move .+1<CR>==i':''
-inoremap <expr> <A-k> line('.') > 1 ? '<Esc>:move .-2<CR>==i':''
+vnoremap <M-k> :m '<-2<Enter>gv=gv
+vnoremap <M-j> :m '>+1<Enter>gv=gv
 
 " up/down in cmd line
 cnoremap  <M-h> <Left>
@@ -282,7 +274,6 @@ cnoremap  <M-k> <Up>
 cnoremap  <M-l> <Right>
 cnoremap  <M-0> <Home>
 cnoremap  <M-b> <Home>
-
 
 " Execure last command again
 nnoremap <Leader>. :!!<Enter>
@@ -364,7 +355,6 @@ command! Q execute "normal! :qa!\<CR>"
 " Alt i to exit Insert Mode
 inoremap <A-i> <Esc><Esc>
 
-
 "----------------------------------------------------------------------
 " Netrw Explorer
 " loaded_netrwPlugin = 0   | Disable netrw
@@ -379,10 +369,9 @@ let g:loaded_netrwPlugin = 0  " Disable netrw
 " NOTE: ftplugin/netrw.vim also defines buffer local ToggleTree
 " Toggle the Tree from bufnr
 func! ToggleTree()
-
-
   if ! exists('g:lzinit_netrw')
     call tree#init#Netrw()
+    let g:lzinit_netrw=1
   endif
 
   " if tree doesn't exists, create it for the 1st time
@@ -466,7 +455,6 @@ if has("autocmd")
     endif
   endfunc
 
-
   autocmd BufEnter * call <SID>OnEnterBuf()
 
   " Quick fix window
@@ -492,14 +480,12 @@ autocmd FileType help
 
 autocmd FileType man nnoremap <buffer> q :quit<CR>
 
-
 " au VimEnter *         sil call s:VimEnter(expand("<amatch>"))
 
 endif
 
 " Source last
 " execute 'source ' . s:vimabbrs
-
 if  !s:Source(g:vim_home . "/lib/abbr.vim")
   echoerr "Failed to source vim abbrs"
 endif
@@ -513,6 +499,4 @@ endif
 " let c = nr2char(1+char2nr(c))
 " endw
 
-
 "EOF
-
